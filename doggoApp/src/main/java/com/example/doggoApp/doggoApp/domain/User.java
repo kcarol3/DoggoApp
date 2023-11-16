@@ -19,11 +19,19 @@ public class User {
     private Long id;
 
     private String name;
+
     private String surname;
+
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String password;
-    private Boolean isDeleted;
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isDeleted = false;
 
     @OneToMany(mappedBy = "user")
     private List<Adoption> adoptions;
