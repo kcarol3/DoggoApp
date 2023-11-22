@@ -1,46 +1,40 @@
 package com.example.doggoApp.doggoApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-
 @Entity
-@Table(name = "user")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public abstract class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
-
-    private String surname;
-
-    @Column(unique = true, nullable = false)
-    private String username;
-
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    private String password;
+    private String age;
+    private String sex;
 
     @Column(columnDefinition = "boolean default false")
     private Boolean isDeleted = false;
 
-    @OneToMany(mappedBy = "user")
-    private List<Adoption> adoptions;
+    @OneToOne(mappedBy = "animal")
+    private Adoption adoption;
 
-    @OneToMany(mappedBy = "user")
-    private List<Announcement> announcements;
+    @OneToOne(mappedBy = "animal")
+    private Announcement announcement;
 
-    @OneToMany(mappedBy = "user")
+    @OneToOne(mappedBy = "animal")
     @JsonManagedReference
-    private List<Animal> animals;
+    private Image image;
+
+    @ManyToOne
+    @JsonBackReference
+    private User user;
 }
