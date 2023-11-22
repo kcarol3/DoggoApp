@@ -1,31 +1,32 @@
 package com.example.doggoApp.doggoApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Entity
-@Table(name = "announcement")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Announcement {
+@AllArgsConstructor
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    private Date createdDate;
+    private String name;
 
-    private String details;
+    private String type;
 
-    @ManyToOne
-    private User user;
+    @Lob
+    @Column(length=2097151)
+    private byte[] data;
 
     @OneToOne
+    @JsonBackReference
     private Animal animal;
-
-    private Boolean isDeleted;
 }
