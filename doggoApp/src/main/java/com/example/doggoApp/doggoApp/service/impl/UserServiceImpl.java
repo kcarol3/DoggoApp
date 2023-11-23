@@ -3,7 +3,6 @@ package com.example.doggoApp.doggoApp.service.impl;
 import com.example.doggoApp.doggoApp.domain.User;
 import com.example.doggoApp.doggoApp.repository.UserRepository;
 import com.example.doggoApp.doggoApp.service.UserService;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
