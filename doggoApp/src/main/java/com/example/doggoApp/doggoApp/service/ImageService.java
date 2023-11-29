@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 @Service
 public class ImageService {
@@ -25,7 +26,7 @@ public class ImageService {
 
         Animal animal = animalRepository.findById(animalId).get();
 
-        Image image = new Image(null, fileName, file.getContentType(), file.getBytes(), animal);
+        Image image = new Image(null, fileName, file.getContentType(), file.getBytes(),false, animal);
 
         Image savedImage = imageRepository.save(image);
 
@@ -36,10 +37,28 @@ public class ImageService {
     }
 
     public Image getImage(Long id) {
-        return imageRepository.findById(id).get();
+        Image image =  imageRepository.findById(id).get();
+        if (image.getIsDeleted()) {
+            throw new NoSuchElementException();
+        }
+        return image;
     }
 
     public void deleteImage(Long id) {
-        imageRepository.deleteById(id);
+            Image image = imageRepository.findById(id).get();
+            image.setIsDeleted(true);
+            imageRepository.save(image);
+    }
+
+    public Image getImageByAnimalId(Long animalId){
+        Image image =  imageRepository.getImageByAnimalId(animalId);
+        if (image == null) {
+            throw new NoSuchElementException();
+        }
+        if(image.getIsDeleted()){
+            throw new NoSuchElementException();
+        }
+
+        return image;
     }
 }
