@@ -26,6 +26,9 @@ public class Image {
     @Column(length=2097151)
     private byte[] data;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isDeleted = false;
+
     @OneToOne
     @JsonBackReference
     private Animal animal;
