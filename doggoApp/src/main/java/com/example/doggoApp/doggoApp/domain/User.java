@@ -1,5 +1,6 @@
 package com.example.doggoApp.doggoApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,15 +20,27 @@ public class User {
     private Long id;
 
     private String name;
+
     private String surname;
+
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String password;
-    private Boolean isDeleted;
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isDeleted = false;
 
     @OneToMany(mappedBy = "user")
     private List<Adoption> adoptions;
 
     @OneToMany(mappedBy = "user")
     private List<Announcement> announcements;
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Animal> animals;
 }

@@ -23,7 +23,7 @@ public class Adoption {
     private User user;
 
     @OneToOne
-    private Dog dog;
+    private Animal animal;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)

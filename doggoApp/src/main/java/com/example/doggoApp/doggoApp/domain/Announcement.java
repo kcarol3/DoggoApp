@@ -25,7 +25,7 @@ public class Announcement {
     private User user;
 
     @OneToOne
-    private Dog dog;
+    private Animal animal;
 
     private Boolean isDeleted;
 }
