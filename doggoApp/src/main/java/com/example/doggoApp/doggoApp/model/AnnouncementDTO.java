@@ -1,6 +1,7 @@
 package com.example.doggoApp.doggoApp.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class AnnouncementDTO {
     private String details;
     private Long userId;
     private Long animalId;
-    private Boolean isDeleted;
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean isDeleted = false;
 }
