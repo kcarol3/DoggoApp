@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 @Transactional
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
-    List<Announcement> getByUser(User user);
+    List<Announcement> findAllByIsDeletedFalse();
 }

@@ -5,6 +5,7 @@ import com.example.doggoApp.doggoApp.repository.AnnouncementRepository;
 import com.example.doggoApp.doggoApp.service.AnnouncementService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -22,6 +23,11 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             throw new NoSuchElementException();
         }
         return announcement;
+    }
+
+    @Override
+    public List<Announcement> getAllAnnouncements() {
+        return announcementRepository.findAllByIsDeletedFalse();
     }
 
     @Override

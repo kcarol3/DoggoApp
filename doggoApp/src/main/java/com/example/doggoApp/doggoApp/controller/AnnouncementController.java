@@ -5,12 +5,12 @@ import com.example.doggoApp.doggoApp.model.AnnouncementDTO;
 import com.example.doggoApp.doggoApp.service.AnimalService;
 import com.example.doggoApp.doggoApp.service.AnnouncementService;
 import com.example.doggoApp.doggoApp.service.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/announcement")
@@ -51,6 +51,29 @@ public class AnnouncementController {
             announcementDTO.setDetails(announcement.getDetails());
 
             return new ResponseEntity<>(announcementDTO, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping(value = "")
+    public ResponseEntity<List<AnnouncementDTO>> getAnnouncements() {
+        try {
+            List<Announcement> announcements = announcementService.getAllAnnouncements();
+
+            List<AnnouncementDTO> announcementDTOs = announcements.stream()
+                    .map(announcement -> {
+                        AnnouncementDTO announcementDTO = new AnnouncementDTO();
+                        announcementDTO.setId(announcement.getId());
+                        announcementDTO.setAnimalId(announcement.getAnimal().getId());
+                        announcementDTO.setUserId(announcement.getUser().getId());
+                        announcementDTO.setCreatedDate(announcement.getCreatedDate());
+                        announcementDTO.setDetails(announcement.getDetails());
+                        return announcementDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(announcementDTOs, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
