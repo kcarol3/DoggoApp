@@ -1,21 +1,21 @@
 package com.example.doggoApp.doggoApp.model;
 
+import com.example.doggoApp.doggoApp.domain.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DogDTO {
+public class AdoptionDTO {
     private Long id;
     private Long userId;
-    private Integer age;
-    private String name;
-    private String sex;
-    private String breed;
-    private Boolean isVaccinated;
-    private Boolean isSterilized;
+    private Long animalId;
+    private final Date date = new Date();
+    private Status status;
 }

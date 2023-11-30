@@ -3,6 +3,7 @@ package com.example.doggoApp.doggoApp.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public abstract class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,4 +39,5 @@ public abstract class Animal {
     @ManyToOne
     @JsonBackReference
     private User user;
+
 }
