@@ -10,4 +10,6 @@ public interface AdoptionService {
     public void cancelAdoption(Long adoptionId);
     public void updateStatus(Long adoptionId, Status newStatus);
     public List<Adoption> getAdoptionsByUserId(Long userId);
+
+    public Adoption getAdoptionById(Long adoptionId);
 }

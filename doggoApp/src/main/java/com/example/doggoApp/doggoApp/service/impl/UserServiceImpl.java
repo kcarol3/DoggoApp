@@ -32,17 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long Id) {
-        Optional<User> userOptional = userRepository.findById(Id);
+        User user = userRepository.findById(Id).get();
 
-        if(userOptional.isPresent()){
-            if(!userOptional.get().getIsDeleted()){
-                return userOptional.get();
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
+        return user;
     }
 
     @Override
