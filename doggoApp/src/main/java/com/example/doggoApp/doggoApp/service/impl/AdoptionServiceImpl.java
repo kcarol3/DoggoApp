@@ -38,6 +38,8 @@ public class AdoptionServiceImpl implements AdoptionService {
         adoptionRepository.save(adoption);
     }
 
+
+
     @Override
     public void updateStatus(Long adoptionId, Status newStatus) {
         Adoption adoption = adoptionRepository.findById(adoptionId).get();
@@ -49,5 +51,10 @@ public class AdoptionServiceImpl implements AdoptionService {
     @Override
     public List<Adoption> getAdoptionsByUserId(Long userId) {
         return adoptionRepository.findAdoptionsByUserId(userId);
+    }
+
+    @Override
+    public Adoption getAdoptionById(Long adoptionId) {
+        return adoptionRepository.findById(adoptionId).get();
     }
 }
