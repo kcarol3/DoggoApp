@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -37,8 +36,8 @@ public class AdoptionController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<String> startAdoption(@RequestBody AdoptionDTO adoptionDTO){
-        try{
+    public ResponseEntity<String> startAdoption(@RequestBody AdoptionDTO adoptionDTO) {
+        try {
             Adoption adoption = new Adoption();
             adoption.setAnimal(animalService.getById(adoptionDTO.getAnimalId()));
             adoption.setUser(userService.getUserById(adoptionDTO.getUserId()));
@@ -47,20 +46,20 @@ public class AdoptionController {
             adoptionService.startAdoption(adoption);
 
             return new ResponseEntity<>("Success start adoption", HttpStatus.OK);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/{adoptionId}/updateStatus")
-    public ResponseEntity<String> updateAdoptionStatus(@RequestParam Status newStatus, @PathVariable Long adoptionId){
-        try{
+    public ResponseEntity<String> updateAdoptionStatus(@RequestParam Status newStatus, @PathVariable Long adoptionId) {
+        try {
             adoptionService.updateStatus(adoptionId, newStatus);
 
             return new ResponseEntity<>("Success update status", HttpStatus.OK);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

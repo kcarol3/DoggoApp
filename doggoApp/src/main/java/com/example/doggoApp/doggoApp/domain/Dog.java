@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Dog extends Animal{
+public class Dog extends Animal {
 
     private String breed;
     private Boolean isSterilized;

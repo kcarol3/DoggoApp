@@ -1,10 +1,12 @@
 package com.example.doggoApp.doggoApp.service;
-import com.itextpdf.text.*;
 
-import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class PDFCreator implements FileCreator {
     private Document document = new Document();
@@ -35,8 +37,8 @@ public class PDFCreator implements FileCreator {
     }
 
     public void addImage(byte[] imageBytes) throws DocumentException, IOException {
-        Image image = Image.getInstance( imageBytes );
-        image.scaleToFit( 140, 140 );
+        Image image = Image.getInstance(imageBytes);
+        image.scaleToFit(140, 140);
         document.add(image);
     }
 
@@ -59,7 +61,7 @@ public class PDFCreator implements FileCreator {
         return new ByteArrayInputStream(out.toByteArray());
     }
 
-    public void closeFile(){
+    public void closeFile() {
         document.close();
     }
 }

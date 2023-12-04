@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -39,7 +38,7 @@ public class DogController {
 
             Dog createdDog = (Dog) animalService.create(dog);
             imageService.store(file, createdDog.getId());
-        } catch (IOException e){
+        } catch (IOException e) {
             return new ResponseEntity<>("Cannot upload file", HttpStatus.BAD_REQUEST);
         }
 
@@ -62,15 +61,15 @@ public class DogController {
     }
 
     @GetMapping(value = "/{id}/image")
-    public ResponseEntity<byte[]> getImage(@PathVariable Long id){
-        try{
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        try {
             Image image = imageService.getImageByAnimalId(id);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
 
-            return new ResponseEntity<>(image.getData(),headers, HttpStatus.OK);
-        } catch (NoSuchElementException e){
+            return new ResponseEntity<>(image.getData(), headers, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

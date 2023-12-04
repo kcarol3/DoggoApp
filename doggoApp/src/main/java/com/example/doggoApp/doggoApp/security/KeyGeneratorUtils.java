@@ -8,7 +8,8 @@ import java.security.KeyPairGenerator;
 @Component
 final class KeyGeneratorUtils {
 
-    private KeyGeneratorUtils() {}
+    private KeyGeneratorUtils() {
+    }
 
     static KeyPair generateRsaKey() {
         KeyPair keyPair;
