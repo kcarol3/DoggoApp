@@ -16,6 +16,7 @@ public class AdoptionDocumentService {
 
     private AdoptionService adoptionService;
     private UserService userService;
+
     public AdoptionDocumentService(AdoptionService adoptionService, UserService userService) {
         this.adoptionService = adoptionService;
         this.userService = userService;

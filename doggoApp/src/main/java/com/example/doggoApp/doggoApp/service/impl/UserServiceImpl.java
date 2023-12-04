@@ -15,15 +15,16 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
     @Override
     public User getUserByUsername(String username) {
         User user = userRepository.getUserByUsername(username);
 
-        if (user != null && !user.getIsDeleted()){
+        if (user != null && !user.getIsDeleted()) {
             return user;
         } else {
             return null;
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User existingUser = userOptional.get();
 
-            if(!existingUser.getIsDeleted()){
+            if (!existingUser.getIsDeleted()) {
                 existingUser.setName(userDetails.getName());
                 existingUser.setSurname(userDetails.getSurname());
                 existingUser.setUsername(userDetails.getUsername());
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
                 existingUser.setPassword(passwordEncoder.encode(userDetails.getPassword()));
 
                 return userRepository.save(existingUser);
-            } else{
+            } else {
                 return null;
             }
         } else {
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long Id) {
         Optional<User> userOptional = userRepository.findById(Id);
 
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User existingUser = userOptional.get();
             existingUser.setIsDeleted(true);
             userRepository.save(existingUser);
