@@ -1,9 +1,7 @@
 package com.example.doggoApp.doggoApp.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -11,7 +9,8 @@ import java.util.Date;
 @Table(name = "announcement")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor
 public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,5 +26,7 @@ public class Announcement {
     @OneToOne
     private Animal animal;
 
-    private Boolean isDeleted;
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean isDeleted = false;
+
 }
