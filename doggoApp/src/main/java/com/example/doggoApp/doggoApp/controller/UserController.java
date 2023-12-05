@@ -52,6 +52,7 @@ public class UserController {
 
             ModelMapper modelMapper = new ModelMapper();
             UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+            userDTO.setPassword(null);
 
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         } catch (NoSuchElementException e) {
