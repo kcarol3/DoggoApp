@@ -23,7 +23,7 @@ public class Image {
     private String type;
 
     @Lob
-    @Column(length=2097151)
+    @Column(length = 2097151)
     private byte[] data;
 
     @Column(columnDefinition = "boolean default false")

@@ -6,6 +6,7 @@ import com.example.doggoApp.doggoApp.service.AnimalService;
 import com.example.doggoApp.doggoApp.service.ImageService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -36,6 +37,11 @@ public class AnimalServiceImpl implements AnimalService {
     public Animal update(Long Id, Animal animal) {
         animal.setId(Id);
         return animalRepository.save(animal);
+    }
+
+    @Override
+    public List<Animal> getAnimalsByUserId(Long userId) {
+        return animalRepository.findAnimalsByUserId(userId);
     }
 
     @Override

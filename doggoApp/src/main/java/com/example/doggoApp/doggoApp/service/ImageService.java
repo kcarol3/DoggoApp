@@ -26,7 +26,7 @@ public class ImageService {
 
         Animal animal = animalRepository.findById(animalId).get();
 
-        Image image = new Image(null, fileName, file.getContentType(), file.getBytes(),false, animal);
+        Image image = new Image(null, fileName, file.getContentType(), file.getBytes(), false, animal);
 
         Image savedImage = imageRepository.save(image);
 
@@ -37,7 +37,7 @@ public class ImageService {
     }
 
     public Image getImage(Long id) {
-        Image image =  imageRepository.findById(id).get();
+        Image image = imageRepository.findById(id).get();
         if (image.getIsDeleted()) {
             throw new NoSuchElementException();
         }
@@ -45,17 +45,17 @@ public class ImageService {
     }
 
     public void deleteImage(Long id) {
-            Image image = imageRepository.findById(id).get();
-            image.setIsDeleted(true);
-            imageRepository.save(image);
+        Image image = imageRepository.findById(id).get();
+        image.setIsDeleted(true);
+        imageRepository.save(image);
     }
 
-    public Image getImageByAnimalId(Long animalId){
-        Image image =  imageRepository.getImageByAnimalId(animalId);
+    public Image getImageByAnimalId(Long animalId) {
+        Image image = imageRepository.getImageByAnimalId(animalId);
         if (image == null) {
             throw new NoSuchElementException();
         }
-        if(image.getIsDeleted()){
+        if (image.getIsDeleted()) {
             throw new NoSuchElementException();
         }
 
