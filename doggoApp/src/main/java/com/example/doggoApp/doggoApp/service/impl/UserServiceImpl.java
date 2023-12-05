@@ -6,7 +6,7 @@ import com.example.doggoApp.doggoApp.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         if (user != null && !user.getIsDeleted()) {
             return user;
         } else {
-            return null;
+            throw new NoSuchElementException();
         }
     }
 
@@ -35,7 +35,12 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long Id) {
         User user = userRepository.findById(Id).get();
 
-        return user;
+        if (!user.getIsDeleted()) {
+            return user;
+        } else {
+            throw new NoSuchElementException();
+        }
+
     }
 
     @Override
@@ -46,35 +51,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long Id, User userDetails) {
-        Optional<User> userOptional = userRepository.findById(Id);
+        User existingUser = userRepository.findById(Id).get();
 
-        if (userOptional.isPresent()) {
-            User existingUser = userOptional.get();
+        if (!existingUser.getIsDeleted()) {
+            existingUser.setName(userDetails.getName());
+            existingUser.setSurname(userDetails.getSurname());
+            existingUser.setUsername(userDetails.getUsername());
+            existingUser.setEmail(userDetails.getEmail());
+            existingUser.setPassword(passwordEncoder.encode(userDetails.getPassword()));
 
-            if (!existingUser.getIsDeleted()) {
-                existingUser.setName(userDetails.getName());
-                existingUser.setSurname(userDetails.getSurname());
-                existingUser.setUsername(userDetails.getUsername());
-                existingUser.setEmail(userDetails.getEmail());
-                existingUser.setPassword(passwordEncoder.encode(userDetails.getPassword()));
-
-                return userRepository.save(existingUser);
-            } else {
-                return null;
-            }
+            return userRepository.save(existingUser);
         } else {
-            return null;
+            throw new NoSuchElementException();
         }
     }
 
     @Override
     public void deleteUser(Long Id) {
-        Optional<User> userOptional = userRepository.findById(Id);
+        User user = userRepository.findById(Id).get();
 
-        if (userOptional.isPresent()) {
-            User existingUser = userOptional.get();
-            existingUser.setIsDeleted(true);
-            userRepository.save(existingUser);
+        if (!user.getIsDeleted()) {
+            user.setIsDeleted(true);
+            userRepository.save(user);
+        } else {
+            throw new NoSuchElementException();
         }
     }
 }

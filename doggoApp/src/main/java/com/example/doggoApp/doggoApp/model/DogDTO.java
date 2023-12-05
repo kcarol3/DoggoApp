@@ -9,12 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DogDTO {
-    private Long id;
-    private Long userId;
-    private Integer age;
-    private String name;
-    private String sex;
+public class DogDTO extends AnimalDTO {
     private String breed;
     private Boolean isVaccinated;
     private Boolean isSterilized;
