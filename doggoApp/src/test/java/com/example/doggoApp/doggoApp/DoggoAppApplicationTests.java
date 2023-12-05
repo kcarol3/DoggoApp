@@ -1,36 +1,26 @@
-package com.example.doggoApp.doggoApp.controller;
+package com.example.doggoApp.doggoApp;
 
-import com.example.doggoApp.doggoApp.domain.Dog;
-import com.example.doggoApp.doggoApp.model.DogDTO;
-import com.example.doggoApp.doggoApp.service.AnimalService;
-import com.example.doggoApp.doggoApp.service.ImageService;
+import com.example.doggoApp.doggoApp.domain.Animal;
+import com.example.doggoApp.doggoApp.repository.AnimalRepository;
+import com.example.doggoApp.doggoApp.service.impl.AnimalServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.io.IOException;
 import java.util.NoSuchElementException;
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
+import static org.mockito.Mockito.when;
 
-class DogControllerTest {
+class AnimalServiceImplTest {
 
 	@Mock
-	private AnimalService animalService;
-
-	@Mock
-	private ImageService imageService;
+	private AnimalRepository animalRepository;
 
 	@InjectMocks
-	private DogController dogController;
+	private AnimalServiceImpl animalService;
 
 	@BeforeEach
 	void setUp() {
@@ -38,64 +28,43 @@ class DogControllerTest {
 	}
 
 	@Test
-	void getDog_withInvalidId_shouldReturnNotFoundResponse() {
-		Long invalidId = 99L;
-		when(animalService.getById(eq(invalidId))).thenThrow(new NoSuchElementException());
-
-		ResponseEntity<DogDTO> responseEntity = dogController.getDog(invalidId);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-		assertThat(responseEntity.getBody()).isNull();
-		verify(animalService, times(1)).getById(eq(invalidId));
+	void givenExistingAnimal_whenGetById_thenReturnAnimal() {
+		Animal animal = new Animal();
+		animal.setId(1L);
+		animal.setIsDeleted(false);
+		when(animalRepository.findById(1L)).thenReturn(Optional.of(animal));
+		Animal result = animalService.getById(1L);
+		assertNotNull(result);
+		assertEquals(1L, result.getId());
 	}
 
 	@Test
-	void updateDog_withValidData_shouldReturnSuccessResponse() {
-		Long dogId = 1L;
-		DogDTO dogDTO = new DogDTO();
-		when(animalService.update(eq(dogId), any(Dog.class))).thenReturn(new Dog());
-
-		ResponseEntity<String> responseEntity = dogController.updateDog(dogDTO, dogId);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseEntity.getBody()).isEqualTo("Success update");
-		verify(animalService, times(1)).update(eq(dogId), any(Dog.class));
+	void givenDeletedAnimal_whenGetById_thenThrowException() {
+		Animal animal = new Animal();
+		animal.setId(1L);
+		animal.setIsDeleted(true);
+		when(animalRepository.findById(1L)).thenReturn(Optional.of(animal));
+		assertThrows(NoSuchElementException.class, () -> animalService.getById(1L));
 	}
 
 	@Test
-	void updateDog_withInvalidId_shouldReturnNotFoundResponse() {
-		Long invalidId = 99L;
-		when(animalService.update(eq(invalidId), any(Dog.class))).thenThrow(new NoSuchElementException());
-
-		ResponseEntity<String> responseEntity = dogController.updateDog(new DogDTO(), invalidId);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-		assertThat(responseEntity.getBody()).isNull();
-		verify(animalService, times(1)).update(eq(invalidId), any(Dog.class));
+	void givenNewAnimal_whenCreateAnimal_thenAnimalCreated() {
+		Animal animal = new Animal();
+		animal.setId(1L);
+		when(animalRepository.save(any(Animal.class))).thenReturn(animal);
+		Animal result = animalService.create(new Animal());
+		assertNotNull(result);
+		assertEquals(1L, result.getId());
 	}
 
 	@Test
-	void delete_withValidId_shouldReturnSuccessResponse() {
-		Long dogId = 1L;
-		Dog dog = new Dog();
-		when(animalService.getById(eq(dogId))).thenReturn(dog);
-
-		ResponseEntity<String> responseEntity = dogController.update(dogId);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseEntity.getBody()).isEqualTo("Success delete");
-		verify(animalService, times(1)).delete(any(Dog.class));
-	}
-
-	@Test
-	void delete_withInvalidId_shouldReturnNotFoundResponse() {
-		Long invalidId = 99L;
-		when(animalService.getById(eq(invalidId))).thenThrow(new NoSuchElementException());
-
-		ResponseEntity<String> responseEntity = dogController.update(invalidId);
-
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-		assertThat(responseEntity.getBody()).isNull();
-		verify(animalService, times(0)).delete(any(Dog.class));
+	void givenExistingAnimal_whenUpdateAnimal_thenAnimalUpdated() {
+		Long animalId = 1L;
+		Animal existingAnimal = new Animal();
+		existingAnimal.setId(animalId);
+		when(animalRepository.save(any(Animal.class))).thenReturn(existingAnimal);
+		Animal result = animalService.update(animalId, new Animal());
+		assertNotNull(result);
+		assertEquals(animalId, result.getId());
 	}
 }
